@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coding Tech Landscape — Beginner Roadmap</title>
+<style>
+  :root{
+    --bg:#ffffff; --panel:#ffffff; --soft:#fafafa; --border:#e4e4e4;
+    --text:#111111; --muted:#6b7280; --accent:#111111;
+    --fe:#2563eb; --be:#16a34a; --fs:#0d9488; --mo:#ea580c;
+    --do:#7c3aed; --cy:#dc2626; --ai:#db2777;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',system-ui,-apple-system,sans-serif}
+  body{background:var(--bg);color:var(--text);padding:40px 20px 90px}
+  .wrap{max-width:1150px;margin:0 auto}
+  header{margin-bottom:34px}
+  h1{font-size:32px;letter-spacing:-.5px;font-weight:800}
+  h1 span{color:var(--muted);font-weight:400}
+  .sub{color:var(--muted);margin-top:8px;font-size:14.5px;line-height:1.6;max-width:640px}
+  .searchbox{margin-top:20px}
+  #q{width:100%;padding:13px 18px;border-radius:12px;border:1px solid var(--border);background:#fff;color:var(--text);font-size:15px;outline:none;transition:border-color .15s}
+  #q:focus{border-color:#111}
+  .count{color:var(--muted);font-size:13px;margin-top:8px}
+
+  /* ---------- Career paths ---------- */
+  .paths-section{margin-top:64px;padding-top:30px;border-top:1px solid var(--border)}
+  .paths-title{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+  .paths-intro{color:var(--muted);font-size:14px;line-height:1.6;margin-top:8px;max-width:640px}
+  .paths{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:18px}
+  .path{width:100%;text-align:left;color:var(--text);font:inherit;background:#fff;border:1px solid var(--border);border-radius:14px;padding:18px 18px 16px;position:relative;overflow:hidden;cursor:pointer;transition:box-shadow .15s,border-color .15s}
+  .path:hover,.path[aria-pressed="true"]{box-shadow:0 4px 18px rgba(0,0,0,.07);border-color:var(--pc)}
+  .path:focus-visible{outline:3px solid var(--pc);outline-offset:3px}
+  .path::before{content:'';position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--pc)}
+  .path-heading{font-size:16px;font-weight:700;display:flex;align-items:center;gap:8px}
+  .path .pdot{width:10px;height:10px;border-radius:50%;background:var(--pc);flex:none}
+  .path-description{display:block;font-size:12.5px;color:var(--muted);margin-top:6px;line-height:1.55}
+  .route{margin-top:12px;display:flex;flex-direction:column;gap:6px}
+  .route-step{font-size:12.5px;display:flex;gap:9px;align-items:baseline;line-height:1.4}
+  .route b{color:var(--pc);font-size:11px;font-family:ui-monospace,monospace;flex:none}
+
+  /* ---------- Legend / filter ---------- */
+  .legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+  .chip{border:1px solid var(--border);background:#fff;border-radius:999px;padding:7px 14px;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:7px;color:var(--text);transition:all .15s}
+  .chip .cdot{width:9px;height:9px;border-radius:50%}
+  .chip:hover{border-color:#111}
+  .chip.active{background:#111;color:#fff;border-color:#111}
+  .chip.active .cdot{outline:2px solid rgba(255,255,255,.5)}
+
+  /* ---------- Categories ---------- */
+  .cat{margin-top:40px}
+  .cat-h{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+  .cat-h .dot{width:9px;height:9px;border-radius:50%;background:#111;flex:none}
+  .cat-h h2{font-size:18px;font-weight:700}
+  .cat-h .n{color:var(--muted);font-size:12.5px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(136px,1fr));gap:10px}
+  .card{width:100%;font:inherit;color:var(--text);cursor:pointer;background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 10px 11px;display:flex;flex-direction:column;align-items:center;gap:8px;transition:transform .15s,border-color .15s,opacity .2s}
+  .card:hover{transform:translateY(-3px);border-color:#111}
+  .card:focus-visible{outline:3px solid #111;outline-offset:2px}
+  .card img{width:42px;height:42px;object-fit:contain}
+  .card .init{width:42px;height:42px;border-radius:10px;background:#f0f0f0;display:none;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:#111}
+  .card-name{font-size:12.5px;text-align:center;line-height:1.25;font-weight:600}
+  .card .tag{font-size:10.5px;color:var(--muted);background:var(--soft);padding:2px 9px;border-radius:20px}
+  .pdots{display:flex;gap:4px;height:8px;align-items:center}
+  .pdots i{width:7px;height:7px;border-radius:50%;display:block}
+  .see-more{margin-top:14px;width:100%;padding:12px;border:1px dashed #c9c9c9;background:#fff;border-radius:12px;font-size:13.5px;color:var(--muted);cursor:pointer;transition:all .15s}
+  .see-more:hover{border-color:#111;color:#111}
+  .hidden{display:none!important}
+  .dim{opacity:.18;pointer-events:none}
+  .details-dialog{width:min(520px,calc(100% - 32px));max-height:min(80vh,700px);margin:auto;padding:0;border:1px solid var(--border);border-radius:16px;background:#fff;color:var(--text);box-shadow:0 20px 60px rgba(0,0,0,.2)}
+  .details-dialog::backdrop{background:rgba(17,17,17,.48)}
+  .details-content{padding:24px}
+  .details-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+  .details-title{font-size:22px;line-height:1.25}
+  .details-category{display:block;color:var(--muted);font-size:13px;margin-top:6px}
+  .details-close{flex:none;border:1px solid var(--border);background:#fff;border-radius:8px;padding:7px 11px;color:var(--text);font:inherit;cursor:pointer}
+  .details-close:hover{border-color:#111}
+  .details-close:focus-visible{outline:3px solid #111;outline-offset:2px}
+  .details-content h3{font-size:14px;margin:22px 0 7px}
+  .details-content p{font-size:14px;line-height:1.6;color:var(--muted)}
+  .details-paths{display:flex;flex-wrap:wrap;gap:8px}
+  .details-path{display:flex;align-items:center;gap:7px;border:1px solid var(--border);border-radius:999px;padding:6px 10px;font-size:12.5px}
+  .details-path i{width:8px;height:8px;border-radius:50%;background:var(--path-color)}
+  footer{margin-top:60px;color:var(--muted);font-size:12.5px;text-align:center;line-height:1.8}
+</style>
+<base target="_blank">
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Coding Tech Landscape <span>— beginner roadmap</span></h1>
+    <div class="sub">Explore the technologies by category, search for a tool, or use the path filters to highlight relevant skills. The beginner roadmaps are at the bottom of the page.</div>
+    <div class="searchbox"><input id="q" type="search" aria-label="Search technologies" placeholder="Search any technology… (e.g. postgres, react, aws)"><div class="count" id="count" aria-live="polite"></div></div>
+  </header>
+
+  <div class="legend" id="legend"></div>
+
+  <div id="root" style="margin-top:36px"></div>
+  <section class="paths-section" aria-labelledby="paths-title">
+    <h2 class="paths-title" id="paths-title">Choose your path — beginner roadmaps</h2>
+    <p class="paths-intro">Pick a roadmap to highlight its related technologies above. Each one lays out a practical starting sequence.</p>
+    <div class="paths" id="paths"></div>
+  </section>
+  <footer>Black &amp; white, on purpose — the colour is reserved for your path.<br>Top 10 shown per category, the rest tucked behind “See more”. Logos via Devicon and Simple Icons; initials are used when no logo is available.</footer>
+</div>
+<dialog class="details-dialog" id="details-dialog" aria-labelledby="details-title" aria-describedby="details-description">
+  <div class="details-content">
+    <div class="details-top">
+      <div><h2 class="details-title" id="details-title"></h2><span class="details-category" id="details-category"></span></div>
+      <button type="button" class="details-close" id="details-close" aria-label="Close technology details">Close</button>
+    </div>
+    <h3>What it does</h3>
+    <p id="details-description"></p>
+    <h3>Who uses it</h3>
+    <div class="details-paths" id="details-paths"></div>
+  </div>
+</dialog>
+<script>
+const CDN = n => `https://cdn.jsdelivr.net/gh/devicons/devicon/icons/${n}/${n}-original.svg`;
+const SIMPLE_ICON_CDN = n => `https://cdn.simpleicons.org/${n}`;
+const DEVICON_ALIASES = {
+  Foundation:'foundation', Firebird:'firebird', Xamarin:'xamarin',
+  YugabyteDB:'yugabytedb', pip:'pypi', Memcached:'memcached',
+  Playwright:'playwright', Slack:'slack', gRPC:'grpc', Twilio:'twilio',
+  RSpec:'rspec', 'OAuth 2.0':'oauth'
+};
+const LOGO_SLUGS = {
+  SVG:'svg', Nuxt:'nuxt', SvelteKit:'svelte', SolidJS:'solid', Qwik:'qwik', Astro:'astro',
+  'Backbone.js':'backbonedotjs', 'Alpine.js':'alpinedotjs', HTMX:'htmx', Lit:'lit', Stimulus:'stimulus',
+  Less:'less', 'Chakra UI':'chakraui', 'Ant Design':'antdesign', 'Radix UI':'radixui',
+  'shadcn/ui':'shadcnui', 'Styled Components':'styledcomponents',
+  Bulma:'bulma', 'Framer Motion':'framer', GSAP:'greensock',
+  'Chart.js':'chartdotjs', 'React Native':'react', SwiftUI:'swift', 'Jetpack Compose':'jetpackcompose',
+  Expo:'expo', Tauri:'tauri', '.NET MAUI':'dotnet',
+  Julia:'julia', Zig:'zig', Nim:'nim', Fastify:'fastify',
+  Hono:'hono', Koa:'koa', Quarkus:'quarkus', Echo:'go',
+  Actix:'actix', Rocket:'rust', Bun:'bun', AdonisJS:'adonisjs', Deno:'deno',
+  Phoenix:'phoenixframework', Strapi:'strapi',
+  CockroachDB:'cockroachlabs', TiDB:'tidb', PlanetScale:'planetscale', Neon:'neon',
+  SingleStore:'singlestore',
+  Snowflake:'snowflake', BigQuery:'googlebigquery',
+  ClickHouse:'clickhouse', ScyllaDB:'scylladb',
+  Couchbase:'couchbase', ArangoDB:'arangodb', OpenSearch:'opensearch',
+  Meilisearch:'meilisearch', TimescaleDB:'timescale',
+  'Firebase Realtime DB':'firebase',
+  Drizzle:'drizzle', 'Entity Framework':'dotnet', SQLAlchemy:'sqlalchemy',
+  'Django ORM':'django', Mongoose:'mongoose', 'Knex.js':'knexdotjs', TypeORM:'typeorm', Doctrine:'doctrine',
+  Dapper:'dotnet', Hasura:'hasura',
+  'Google Cloud Platform':'googlecloud', 'Google Cloud SQL':'googlecloud',
+  
+  'Alibaba Cloud':'alibabacloud', 'Linode / Akamai':'akamai',
+  'Supabase Postgres':'supabase',
+  SingleStore:'singlestore', Vultr:'vultr', Hetzner:'hetzner', OVHcloud:'ovh', Render:'render',
+  Railway:'railway', 'Fly.io':'flydotio', Vercel:'vercel', Netlify:'netlify',
+  'GitHub Pages':'github', 'Cloudflare Pages':'cloudflare', Firebase:'firebase',
+  Supabase:'supabase', 'Coolify / Dokploy':'coolify',
+  Podman:'podman', containerd:'containerd', Helm:'helm', Kustomize:'kubernetes',
+  K3s:'k3s', Minikube:'kubernetes', Nomad:'nomad', OpenShift:'redhatopenshift',
+  Rancher:'rancher', Istio:'istio', Linkerd:'linkerd', Envoy:'envoyproxy',
+  Skaffold:'skaffold', Kaniko:'googlecloud',
+  Pulumi:'pulumi', Chef:'chef', Puppet:'puppet', SaltStack:'saltproject',
+  Vagrant:'vagrant', Packer:'packer', Jenkins:'jenkins', Bamboo:'bamboo',
+  'Drone CI':'drone', 'Octopus Deploy':'octopusdeploy', 'GitHub Actions':'githubactions',
+  'GitLab CI':'gitlab', CircleCI:'circleci', 'Travis CI':'travisci',
+  ArgoCD:'argo', Flux:'flux',
+  Buildkite:'buildkite', TeamCity:'teamcity',
+  Gitea:'gitea', SourceForge:'sourceforge', 'Perforce / Helix':'perforce',
+  Mercurial:'mercurial', Linear:'linear', Jira:'jira', Confluence:'confluence',
+  Notion:'notion', Discord:'discord', Trello:'trello',
+  tRPC:'trpc', NATS:'natsdotio',
+  'Apache Pulsar':'apachepulsar', 'Redis Streams':'redis', MQTT:'mqtt',
+  'Apollo GraphQL':'apollographql',
+  'Google Pub/Sub':'googlecloud', Stripe:'stripe',
+  'OpenAPI / Swagger':'openapiinitiative',
+  Postman:'postman', Cypress:'cypress', Vitest:'vitest', 'Testing Library':'testinglibrary',
+  JMeter:'apachejmeter',
+  Puppeteer:'puppeteer', Pytest:'pytest', Unittest:'python',
+  'xUnit.net':'dotnet', 'Go testing':'go',
+  'Rust test':'rust', Insomnia:'insomnia', k6:'k6', Gatling:'gatling',
+  ESLint:'eslint', Prettier:'prettier', Black:'python', Codecov:'codecov',
+  Auth0:'auth0', Clerk:'clerk', 'Firebase Auth':'firebase',
+  Keycloak:'keycloak', 'Supabase Auth':'supabase',
+  'OpenID Connect':'openid', JWT:'jsonwebtokens',
+  'Passkeys / WebAuthn':'webauthn', Authentik:'authentik',
+  Fastly:'fastly', Akamai:'akamai', 'Vercel Edge':'vercel',
+  Caddy:'caddy', Traefik:'traefikproxy', Envoy:'envoyproxy',
+  "Let's Encrypt":'letsencrypt', Certbot:'letsencrypt', Snyk:'snyk',
+  Dependabot:'dependabot', 'WAF / OWASP':'owasp',
+  Fail2ban:'linux', Wireshark:'wireshark', 'Burp Suite':'burpsuite',
+  Metasploit:'metasploit', 'Kali Linux':'kalilinux',
+  Loki:'grafana', Datadog:'datadog', 'New Relic':'newrelic', Dynatrace:'dynatrace',
+  Sentry:'sentry', Splunk:'splunk',
+  PagerDuty:'pagerduty', OpenTelemetry:'opentelemetry', Jaeger:'jaeger',
+  'Better Stack':'betterstack', Airflow:'apacheairflow',
+  Keras:'keras', 'Hugging Face':'huggingface',
+  'Anthropic API':'anthropic', LangChain:'langchain',
+  Ollama:'ollama', Pandas:'pandas', NumPy:'numpy', Polars:'polars',
+  'Weights & Biases':'weightsandbiases', MLflow:'mlflow',
+  CUDA:'nvidia', spaCy:'spacy',
+  pnpm:'pnpm', Yarn:'yarn', Poetry:'poetry', uv:'uv', Cargo:'rust',
+  NuGet:'nuget', Composer:'composer', Bundler:'ruby', Vite:'vite',
+  esbuild:'esbuild', Turbopack:'vercel', SWC:'swc', Turborepo:'turborepo',
+  Nx:'nx', Lerna:'lerna', PyCharm:'pycharm', WebStorm:'webstorm', Rider:'jetbrains',
+  'Sublime Text':'sublimetext', Neovim:'neovim', Emacs:'gnuemacs', Xcode:'xcode',
+  'Android Studio':'androidstudio', Cursor:'cursor', Zed:'zedindustries', Helix:'helix',
+  Fleet:'jetbrains', Replit:'replit',
+  JupyterLab:'jupyter', WordPress:'wordpress', Shopify:'shopify',
+  HubSpot:'hubspot', Figma:'figma', Storybook:'storybook',
+  'Swagger / OpenAPI':'openapiinitiative', Docusaurus:'docusaurus', Ngrok:'ngrok',
+  MinIO:'minio', Cloudinary:'cloudinary',
+  'Sanity / Contentful':'sanity', 'Lens / k9s':'kubernetes', GitKraken:'gitkraken',
+  'Oh My Zsh':'zsh', 'TryHackMe / HTB':'tryhackme'
+};
+const PATHS = {
+  FE:{name:'Frontend', color:'var(--fe)', hex:'#2563eb'},
+  BE:{name:'Backend', color:'var(--be)', hex:'#16a34a'},
+  FS:{name:'Full-Stack', color:'var(--fs)', hex:'#0d9488'},
+  MO:{name:'Mobile', color:'var(--mo)', hex:'#ea580c'},
+  DO:{name:'DevOps & Cloud', color:'var(--do)', hex:'#7c3aed'},
+  CY:{name:'Cybersecurity', color:'var(--cy)', hex:'#dc2626'},
+  AI:{name:'AI / ML & Data', color:'var(--ai)', hex:'#db2777'}
+};
+const ROUTES = [
+ {k:'FE', d:'What users see and click in the browser.', steps:['HTML + CSS — structure & style','JavaScript — make it interactive','TypeScript — JS with safety rails','React (+ Next.js) — the industry standard','Tailwind — style fast, then deploy on Vercel']},
+ {k:'BE', d:'The invisible engine: servers, logic, data.', steps:['Python (or Node.js/Go) — first language','PostgreSQL — learn SQL properly','Django / Express — build real APIs','Auth (JWT/OAuth) + REST design','Docker + AWS — ship it to the world']},
+ {k:'FS', d:'Do both: frontend + backend together.', steps:['HTML/CSS/JS basics','React on the front, Node/Express behind','PostgreSQL + Prisma for data','TypeScript end-to-end (tRPC)','Deploy full apps on Vercel + AWS']},
+ {k:'MO', d:'Apps for phones and tablets.', steps:['Pick one: Flutter (Dart) or React Native (JS)','Learn the language deeply','Build screens + navigation + state','Use device APIs (camera, GPS)','Ship to App Store / Play Store']},
+ {k:'DO', d:'Keep servers alive, automated and scalable.', steps:['Linux + Git — your daily home','Docker — package anything','CI/CD (GitHub Actions) — automate tests','Kubernetes — orchestrate containers','Terraform + AWS — infra as code']},
+ {k:'CY', d:'Break systems ethically to defend them.', steps:['Networking: TCP/IP, DNS, HTTP','Linux + Python for scripting','Wireshark + Burp Suite — see the traffic','TryHackMe / HackTheBox — practice daily','Certs: Security+ → CEH → OSCP']},
+ {k:'AI', d:'Teach machines to learn from data.', steps:['Python — non-negotiable','NumPy + Pandas — wrangle data','Math: stats, linear algebra basics','scikit-learn → PyTorch / TensorFlow','LangChain + RAG — build AI apps']}
+];
+const DATA = [
+{c:"Frontend — Core Languages",items:[
+ ["HTML5","html5","markup","FE FS MO"],["CSS3","css3","styling","FE FS MO"],["JavaScript","javascript","language","FE FS MO"],["TypeScript","typescript","language","FE FS MO BE"],["WebAssembly","wasm","fast code in browser","FE"],["SVG","svg","vector graphics","FE"]]},
+{c:"Frontend — Frameworks & Libraries",items:[
+ ["React","react","library","FE FS"],["Next.js","nextjs","framework","FE FS"],["Vue.js","vuejs","framework","FE FS"],["Nuxt",null,"framework","FE"],["Angular","angular","framework","FE FS"],["Svelte","svelte","framework","FE"],["SvelteKit",null,"framework","FE"],["SolidJS",null,"framework","FE"],["Qwik",null,"framework","FE"],["Astro",null,"content sites","FE"],["jQuery","jquery","classic library","FE"],["Ember.js","ember","framework","FE"],["Backbone.js","backbone","framework","FE"],["Alpine.js",null,"micro-framework","FE"],["HTMX",null,"hypermedia","FE"],["Lit",null,"web components","FE"],["Stimulus",null,"modest JS","FE"]]},
+{c:"Frontend — Styling & UI",items:[
+ ["Tailwind CSS","tailwindcss","utility CSS","FE FS"],["Bootstrap","bootstrap","CSS framework","FE"],["Sass / SCSS","sass","preprocessor","FE"],["Less","less","preprocessor","FE"],["Material UI","materialui","component lib","FE"],["Chakra UI",null,"component lib","FE"],["Ant Design",null,"component lib","FE"],["Radix UI",null,"primitives","FE"],["shadcn/ui",null,"components","FE"],["Styled Components",null,"CSS-in-JS","FE"],["Emotion",null,"CSS-in-JS","FE"],["PostCSS","postcss","tooling","FE"],["Bulma","bulma","CSS framework","FE"],["Foundation",null,"CSS framework","FE"],["Framer Motion",null,"animation","FE"],["GSAP",null,"animation","FE"],["Three.js","threejs","3D graphics","FE AI"],["D3.js","d3js","data viz","FE AI"],["Chart.js",null,"data viz","FE AI"]]},
+{c:"Mobile & Desktop",items:[
+ ["React Native",null,"mobile","MO FS"],["Flutter","flutter","mobile","MO"],["Swift","swift","iOS","MO"],["SwiftUI",null,"iOS UI","MO"],["Kotlin","kotlin","Android","MO BE"],["Jetpack Compose",null,"Android UI","MO"],["Ionic","ionic","hybrid","MO"],["Xamarin",null,"hybrid","MO"],["Expo",null,"RN toolchain","MO"],["Electron","electron","desktop","MO"],["Tauri",null,"desktop","MO"],["Qt","qt","desktop","MO"],[".NET MAUI",null,"cross-platform","MO"]]},
+{c:"Backend — Languages",items:[
+ ["Python","python","language","BE FS AI CY"],["Node.js (JS)","nodejs","runtime","BE FS"],["Java","java","language","BE MO"],["C#","csharp","language","BE MO"],["Go","go","language","BE DO"],["Rust","rust","language","BE CY DO"],["C++","cplusplus","language","BE CY AI"],["C","c","language","BE CY"],["PHP","php","language","BE"],["Ruby","ruby","language","BE"],["Kotlin","kotlin","language","BE MO"],["Scala","scala","language","BE AI"],["Elixir","elixir","language","BE"],["Erlang","erlang","language","BE"],["Perl","perl","language","BE CY"],["Haskell","haskell","language","BE AI"],["Lua","lua","language","BE"],["Dart","dart","language","MO"],["R","r","language","AI"],["Groovy","groovy","language","BE"],["Clojure","clojure","language","BE"],["Julia",null,"language","AI"],["Zig",null,"language","BE"],["Nim",null,"language","BE"]]},
+{c:"Backend — Frameworks & Runtimes",items:[
+ ["Django","django","Python","BE FS"],["Flask","flask","Python","BE"],["FastAPI","fastapi","Python","BE AI"],["Tornado",null,"Python","BE"],["Express.js","express","Node","BE FS"],["NestJS","nestjs","Node","BE"],["Fastify",null,"Node","BE"],["Hono",null,"Node","BE"],["Koa","koa","Node","BE"],["Spring / Spring Boot","spring","Java","BE"],["Quarkus",null,"Java","BE"],["Micronaut",null,"Java","BE"],["Ruby on Rails","rails","Ruby","BE"],["Laravel","laravel","PHP","BE"],["Symfony","symfony","PHP","BE"],["ASP.NET Core","dot-net","C#","BE"],["Gin","go","Go","BE"],["Echo",null,"Go","BE"],["Actix",null,"Rust","BE"],["Rocket",null,"Rust","BE"],["Phoenix","phoenixframework","Elixir","BE"],["Deno","deno","runtime","BE"],["Bun",null,"runtime","BE"],["AdonisJS",null,"Node","BE"],["Strapi",null,"headless CMS","BE FS"]]},
+{c:"Databases — Relational (SQL)",items:[
+ ["PostgreSQL","postgresql","RDBMS","BE FS AI"],["MySQL","mysql","RDBMS","BE FS"],["MariaDB","mariadb","RDBMS","BE"],["SQLite","sqlite","embedded","BE FS MO"],["Oracle DB","oracle","RDBMS","BE"],["SQL Server","microsoftsqlserver","RDBMS","BE"],["CockroachDB",null,"distributed","BE DO"],["TiDB",null,"distributed","BE"],["Amazon Aurora",null,"cloud","BE DO"],["Google Cloud SQL",null,"cloud","BE DO"],["PlanetScale",null,"serverless","BE"],["Neon",null,"serverless","BE"],["Snowflake",null,"warehouse","AI"],["BigQuery",null,"warehouse","AI"],["Redshift",null,"warehouse","AI"],["ClickHouse",null,"columnar","AI"],["Firebird",null,"RDBMS","BE"],["Supabase Postgres",null,"cloud","BE FS"],["SingleStore",null,"HTAP","BE"],["YugabyteDB",null,"distributed","BE"]]},
+{c:"Databases — NoSQL & Search",items:[
+ ["MongoDB","mongodb","document","BE FS"],["Redis","redis","cache / kv","BE FS DO"],["Amazon DynamoDB",null,"kv","BE DO"],["Cassandra","cassandra","wide-column","BE DO"],["ScyllaDB",null,"wide-column","BE"],["Couchbase","couchbase","document","BE"],["CouchDB","couchdb","document","BE"],["Neo4j","neo4j","graph","BE AI"],["ArangoDB",null,"multi-model","BE"],["Elasticsearch","elasticsearch","search","BE DO"],["OpenSearch",null,"search","BE DO"],["Meilisearch",null,"search","BE"],["Typesense",null,"search","BE"],["InfluxDB","influxdb","time-series","DO AI"],["TimescaleDB",null,"time-series","AI"],["Firebase Realtime DB",null,"document","MO FS"],["RavenDB",null,"document","BE"],["Memcached",null,"cache","BE DO"],["Valkey",null,"cache","BE DO"],["Vector DBs (Pinecone/Weaviate)",null,"AI search","AI"]]},
+{c:"Data Access — ORMs & Query Builders",items:[
+ ["Prisma","prisma","ORM","BE FS"],["Drizzle",null,"ORM","BE FS"],["Hibernate","hibernate","ORM","BE"],["Entity Framework",null,"ORM","BE"],["SQLAlchemy",null,"ORM","BE AI"],["Django ORM",null,"ORM","BE"],["Sequelize","sequelize","ORM","BE"],["TypeORM","typeorm","ORM","BE"],["Mongoose",null,"ODM","BE"],["Knex.js",null,"query builder","BE"],["Doctrine",null,"ORM","BE"],["Dapper",null,"micro-ORM","BE"],["JOOQ",null,"query builder","BE"],["Hasura",null,"GraphQL engine","BE FS"]]},
+{c:"Cloud Providers & Hosting",items:[
+ ["Amazon Web Services (AWS)","amazonwebservices","cloud","DO BE"],["Microsoft Azure","azure","cloud","DO BE"],["Google Cloud Platform","googlecloud","cloud","DO AI"],["Oracle Cloud (OCI)","oracle","cloud","DO"],["IBM Cloud",null,"cloud","DO"],["Alibaba Cloud",null,"cloud","DO"],["DigitalOcean","digitalocean","cloud","DO FS"],["Linode / Akamai","linode","cloud","DO"],["Vultr",null,"cloud","DO"],["Hetzner",null,"cloud","DO"],["OVHcloud",null,"cloud","DO"],["Render",null,"PaaS","DO FS"],["Railway",null,"PaaS","DO FS"],["Heroku","heroku","PaaS","DO FS"],["Fly.io",null,"PaaS","DO"],["Vercel",null,"hosting","FE FS"],["Netlify",null,"hosting","FE FS"],["GitHub Pages",null,"hosting","FE FS"],["Cloudflare Pages",null,"hosting","FE FS"],["Firebase",null,"BaaS","MO FS"],["Supabase",null,"BaaS","FS BE"],["Coolify / Dokploy",null,"self-host PaaS","DO"]]},
+{c:"DevOps — Containers & Orchestration",items:[
+ ["Docker","docker","containers","DO BE FS"],["Kubernetes","kubernetes","orchestration","DO"],["Podman",null,"containers","DO"],["containerd",null,"runtime","DO"],["Helm",null,"k8s packages","DO"],["Kustomize",null,"k8s config","DO"],["K3s",null,"lightweight k8s","DO"],["Minikube",null,"local k8s","DO"],["Nomad",null,"orchestration","DO"],["OpenShift",null,"k8s platform","DO"],["Rancher",null,"k8s mgmt","DO"],["Istio",null,"service mesh","DO"],["Linkerd",null,"service mesh","DO"],["Envoy",null,"proxy","DO"],["Skaffold",null,"k8s dev","DO"],["Kaniko",null,"build","DO"]]},
+{c:"DevOps — IaC & CI/CD",items:[
+ ["Terraform","terraform","IaC","DO"],["Pulumi",null,"IaC","DO"],["Ansible","ansible","config mgmt","DO CY"],["Chef",null,"config mgmt","DO"],["Puppet","puppet","config mgmt","DO"],["SaltStack",null,"config mgmt","DO"],["Vagrant","vagrant","VMs","DO"],["Packer",null,"images","DO"],["Jenkins","jenkins","CI/CD","DO"],["GitHub Actions","githubactions","CI/CD","DO FS"],["GitLab CI","gitlab","CI/CD","DO"],["CircleCI","circleci","CI/CD","DO"],["Travis CI","travis","CI/CD","DO"],["Azure DevOps","azuredevops","CI/CD","DO"],["ArgoCD","argocd","GitOps","DO"],["Flux",null,"GitOps","DO"],["Drone CI",null,"CI/CD","DO"],["Buildkite",null,"CI/CD","DO"],["TeamCity",null,"CI/CD","DO"],["Bamboo",null,"CI/CD","DO"],["Octopus Deploy",null,"CD","DO"]]},
+{c:"Version Control & Collaboration",items:[
+ ["Git","git","VCS","FE BE FS MO DO CY AI"],["GitHub","github","hosting","FE BE FS MO DO CY AI"],["GitLab","gitlab","hosting","DO BE"],["Bitbucket","bitbucket","hosting","BE"],["Gitea",null,"self-host","DO"],["Gogs",null,"self-host","DO"],["SourceForge",null,"hosting","DO"],["Perforce / Helix",null,"VCS","DO"],["Subversion (SVN)","subversion","VCS","DO"],["Mercurial",null,"VCS","DO"],["Linear",null,"issues","FE BE FS"],["Jira",null,"issues","FE BE FS DO"],["Confluence",null,"docs","FE BE FS"],["Notion",null,"docs","FE BE FS CY AI"],["Slack",null,"comms","FE BE FS MO DO CY AI"],["Discord",null,"comms","FE FS MO"],["Trello",null,"boards","FE BE FS"]]},
+{c:"APIs, Messaging & Streaming",items:[
+ ["REST",null,"architecture","BE FS"],["GraphQL","graphql","query lang","BE FS"],["Apollo GraphQL","apollo","GraphQL","BE FS"],["gRPC",null,"RPC","BE AI"],["tRPC",null,"typed APIs","FS"],["WebSocket",null,"realtime","BE FS"],["Socket.IO","socketio","realtime","BE FS"],["Apache Kafka","apachekafka","streaming","BE DO AI"],["RabbitMQ","rabbitmq","message queue","BE DO"],["NATS",null,"message queue","BE DO"],["Apache Pulsar",null,"streaming","BE DO"],["Redis Streams",null,"streaming","BE"],["MQTT","mqtt","IoT protocol","BE DO"],["AWS SQS/SNS",null,"messaging","BE DO"],["Google Pub/Sub",null,"messaging","BE DO"],["Stripe",null,"payments API","BE FS"],["Twilio",null,"comms API","BE"],["SendGrid",null,"email API","BE"],["OpenAPI / Swagger",null,"API spec","BE FS"],["Postman",null,"API client","BE FS CY"]]},
+{c:"Testing & Quality",items:[
+ ["Jest","jest","JS testing","FE FS"],["Vitest",null,"JS testing","FE FS"],["Mocha","mocha","JS testing","FE"],["Testing Library",null,"component testing","FE FS"],["Cypress","cypress","E2E","FE FS"],["Playwright",null,"E2E","FE FS"],["Selenium","selenium","E2E","FE"],["Puppeteer",null,"E2E","FE"],["Pytest",null,"Python testing","BE AI"],["Unittest",null,"Python testing","BE"],["JUnit","junit","Java testing","BE"],["TestNG",null,"Java testing","BE"],["xUnit.net",null,"C# testing","BE"],["RSpec",null,"Ruby testing","BE"],["Go testing",null,"Go testing","BE"],["Rust test",null,"Rust testing","BE"],["Postman",null,"API testing","BE FS CY"],["Insomnia",null,"API testing","BE"],["k6",null,"load testing","DO BE"],["Gatling",null,"load testing","BE"],["JMeter","apachejmeter","load testing","BE DO CY"],["SonarQube","sonarqube","code quality","DO CY"],["ESLint",null,"linting","FE"],["Prettier",null,"formatting","FE"],["Black",null,"formatting","BE"],["Codecov",null,"coverage","DO"]]},
+{c:"Auth & Identity",items:[
+ ["Auth0",null,"identity","BE FS"],["Clerk",null,"identity","BE FS"],["Okta","okta","identity","BE DO CY"],["AWS Cognito",null,"identity","BE DO"],["Firebase Auth",null,"identity","MO FS"],["Keycloak",null,"open-source IdP","BE DO CY"],["Supabase Auth",null,"identity","FS BE"],["OAuth 2.0",null,"protocol","BE CY"],["OpenID Connect",null,"protocol","BE CY"],["SAML",null,"protocol","BE DO CY"],["JWT",null,"tokens","BE FS CY"],["Passkeys / WebAuthn",null,"passwordless","BE CY"],["WorkOS",null,"enterprise SSO","BE"],["Authentik",null,"open-source IdP","DO CY"]]},
+{c:"Edge, CDN, Networking & Security",items:[
+ ["Cloudflare","cloudflare","CDN/security","DO FE CY"],["Akamai","akamai","CDN","DO CY"],["Fastly",null,"CDN","DO"],["AWS CloudFront",null,"CDN","DO"],["Vercel Edge",null,"edge","FE DO"],["Nginx","nginx","web server","BE DO CY"],["Apache HTTP Server","apache","web server","BE DO"],["Caddy",null,"web server","BE DO"],["HAProxy",null,"load balancer","DO CY"],["Traefik",null,"proxy","DO"],["Envoy",null,"proxy","DO"],["Let's Encrypt",null,"TLS","DO CY"],["Certbot",null,"TLS","DO CY"],["HashiCorp Vault","vault","secrets","DO CY"],["Snyk",null,"SAST","DO CY"],["Dependabot",null,"supply chain","DO CY"],["CrowdStrike",null,"endpoint","CY"],["WAF / OWASP",null,"security","CY DO"],["Fail2ban",null,"security","CY DO"],["Wireshark",null,"traffic analysis","CY"],["Burp Suite",null,"web pentesting","CY"],["Metasploit",null,"pentesting","CY"],["Nmap",null,"network scanning","CY"],["Kali Linux",null,"security OS","CY"]]},
+{c:"Observability & Monitoring",items:[
+ ["Prometheus","prometheus","metrics","DO"],["Grafana","grafana","dashboards","DO"],["Loki",null,"logs","DO"],["Datadog",null,"APM","DO"],["New Relic",null,"APM","DO"],["Dynatrace",null,"APM","DO"],["Sentry",null,"error tracking","FE FS BE DO"],["Elastic Stack (ELK)","elasticsearch","logs","DO"],["Splunk",null,"logs","DO CY"],["Nagios",null,"monitoring","DO"],["Zabbix",null,"monitoring","DO"],["PagerDuty",null,"incidents","DO"],["OpenTelemetry",null,"telemetry","DO"],["Jaeger",null,"tracing","DO"],["Zipkin",null,"tracing","DO"],["Uptime Robot",null,"uptime","DO"],["Better Stack",null,"uptime","DO"],["Honeycomb",null,"observability","DO"],["LogRocket",null,"session replay","FE"]]},
+{c:"AI / ML / Data (coding-relevant)",items:[
+ ["TensorFlow","tensorflow","ML","AI"],["PyTorch","pytorch","ML","AI"],["Keras",null,"ML","AI"],["scikit-learn","scikitlearn","ML","AI"],["Hugging Face",null,"models","AI"],["OpenAI API",null,"LLM","AI"],["Anthropic API",null,"LLM","AI"],["LangChain",null,"LLM framework","AI"],["LlamaIndex",null,"RAG","AI"],["Ollama",null,"local LLMs","AI"],["Jupyter","jupyter","notebooks","AI"],["Pandas",null,"data","AI"],["NumPy",null,"data","AI"],["Polars",null,"data","AI"],["Apache Spark","apachespark","big data","AI"],["Airflow","airflow","pipelines","AI DO"],["dbt",null,"transform","AI"],["Dagster",null,"pipelines","AI"],["Weights & Biases",null,"ML ops","AI"],["MLflow",null,"ML ops","AI"],["CUDA",null,"GPU","AI"],["OpenCV","opencv","vision","AI"],["spaCy",null,"NLP","AI"]]},
+{c:"Package Managers & Build Tools",items:[
+ ["npm","npm","Node packages","FE FS BE"],["pnpm",null,"Node packages","FE FS"],["Yarn","yarn","Node packages","FE FS"],["pip","pip","Python packages","BE AI"],["Poetry",null,"Python packages","BE"],["uv",null,"Python packages","BE AI"],["Cargo","cargo","Rust packages","BE"],["Maven","maven","Java build","BE"],["Gradle","gradle","Java/Kotlin build","BE MO"],["NuGet","nuget",".NET packages","BE"],["Composer","composer","PHP packages","BE"],["Bundler","bundler","Ruby packages","BE"],["Homebrew","homebrew","macOS packages","DO CY"],["apt / dnf","linux","OS packages","DO CY"],["Webpack","webpack","bundler","FE"],["Vite",null,"bundler","FE FS"],["Rollup.js","rollup","bundler","FE"],["esbuild",null,"bundler","FE"],["Turbopack",null,"bundler","FE"],["Babel","babel","transpiler","FE"],["SWC",null,"transpiler","FE"],["Turborepo",null,"monorepo","FE FS"],["Nx",null,"monorepo","FE FS BE"],["Lerna",null,"monorepo","FE"],["Make","cmake","build","BE CY"],["CMake","cmake","build","BE CY"],["Bazel","bazel","build","BE DO"]]},
+{c:"Code Editors & IDEs",items:[
+ ["VS Code","vscode","editor","FE BE FS MO DO CY AI"],["Visual Studio","visualstudio","IDE","BE MO"],["IntelliJ IDEA","intellij","IDE","BE"],["PyCharm",null,"IDE","BE AI"],["WebStorm",null,"IDE","FE"],["Rider",null,"IDE","BE"],["Sublime Text",null,"editor","FE"],["Vim","vim","editor","DO CY"],["Neovim",null,"editor","DO CY"],["Emacs",null,"editor","DO"],["Eclipse","eclipse","IDE","BE"],["Xcode",null,"IDE","MO"],["Android Studio","androidstudio","IDE","MO"],["Cursor",null,"AI editor","FE BE AI"],["Zed",null,"editor","FE"],["Helix",null,"editor","DO"],["Fleet",null,"IDE","BE"],["Replit",null,"cloud IDE","FE BE"],["GitHub Codespaces",null,"cloud IDE","FE BE"],["JupyterLab",null,"notebooks","AI"]]},
+{c:"Project Types & Other Essentials",items:[
+ ["WordPress",null,"CMS","FE BE"],["Shopify",null,"e-commerce","FE BE"],["Salesforce",null,"CRM","BE"],["HubSpot",null,"CRM","BE"],["Stripe",null,"payments","BE FS"],["Figma",null,"design","FE"],["Storybook",null,"UI docs","FE"],["Swagger / OpenAPI",null,"API docs","BE FS"],["Docusaurus",null,"docs site","FE"],["Ngrok",null,"tunnels","BE CY"],["LocalStack",null,"AWS local","DO"],["MinIO",null,"S3 compatible","DO AI"],["Cloudinary",null,"media CDN","FE"],["Sanity / Contentful",null,"headless CMS","FE"],["Lens / k9s",null,"k8s UI","DO"],["GitKraken",null,"Git GUI","FE BE"],["Oh My Zsh",null,"shell","DO CY"],["TryHackMe / HTB",null,"cyber practice","CY"]]}
+];
+const ALL = ['FE','BE','FS','MO','DO','CY','AI'];
+const initials = n => n.split(/[\s\/().-]+/).filter(Boolean).slice(0,2).map(w=>w[0].toUpperCase()).join('');
+const dotColor = k => PATHS[k].hex;
+const logoSources = (name, icon) => {
+  const devicon = icon || DEVICON_ALIASES[name];
+  return [
+    ...(LOGO_SLUGS[name] ? [SIMPLE_ICON_CDN(LOGO_SLUGS[name])] : []),
+    ...(devicon ? [CDN(devicon), CDN(devicon).replace('-original','-plain')] : [])
+  ];
+};
+function advanceLogo(img){
+  const sources = img.dataset.logoSources.split('|');
+  const next = Number(img.dataset.logoIndex) + 1;
+  if(next < sources.length){
+    img.dataset.logoIndex = next;
+    img.src = sources[next];
+    return;
+  }
+  img.onerror = null;
+  img.style.display = 'none';
+  img.nextElementSibling.style.display = 'flex';
+}
+const CATEGORY_PURPOSES = {
+  'Frontend — Core Languages':'creating the structure, visual styling, and interactive behavior of websites.',
+  'Frontend — Frameworks & Libraries':'building and organizing website interfaces and web application features.',
+  'Frontend — Styling & UI':'styling pages, creating interface components, and adding visual effects or data displays.',
+  'Mobile & Desktop':'building applications that run on phones, tablets, or desktop computers.',
+  'Backend — Languages':'writing server-side logic, APIs, and other software services.',
+  'Backend — Frameworks & Runtimes':'running server-side JavaScript or building web servers and APIs.',
+  'Databases — Relational (SQL)':'storing structured information and querying it with relational database tools.',
+  'Databases — NoSQL & Search':'storing, caching, or searching data with non-relational systems.',
+  'Data Access — ORMs & Query Builders':'connecting application code to databases and working with stored data.',
+  'Cloud Providers & Hosting':'running applications and storing data on hosted cloud infrastructure.',
+  'DevOps — Containers & Orchestration':'packaging applications and running or coordinating them across environments.',
+  'DevOps — IaC & CI/CD':'automating infrastructure setup, software testing, and application delivery.',
+  'Version Control & Collaboration':'tracking code changes and coordinating work across teams.',
+  'APIs, Messaging & Streaming':'connecting software services and exchanging requests, events, or messages.',
+  'Testing & Quality':'checking software behavior, finding defects, and maintaining code quality.',
+  'Auth & Identity':'managing user identity, sign-in, and access to applications.',
+  'Edge, CDN, Networking & Security':'routing and protecting network traffic, websites, and application infrastructure.',
+  'Observability & Monitoring':'measuring application health and investigating errors or performance issues.',
+  'AI / ML / Data (coding-relevant)':'working with data, building machine-learning systems, and integrating AI capabilities.',
+  'Package Managers & Build Tools':'installing software dependencies and building or bundling applications.',
+  'Code Editors & IDEs':'writing, navigating, and debugging software code.',
+  'Project Types & Other Essentials':'supporting common project needs such as content, design, payments, or security practice.'
+};
+const detailsDialog = document.getElementById('details-dialog');
+const detailTitle = document.getElementById('details-title');
+const detailCategory = document.getElementById('details-category');
+const detailDescription = document.getElementById('details-description');
+const detailPaths = document.getElementById('details-paths');
+document.getElementById('details-close').onclick = ()=>detailsDialog.close();
+detailsDialog.addEventListener('click', event=>{
+  if(event.target===detailsDialog) detailsDialog.close();
+});
+
+/* ---------- Render career path cards ---------- */
+const pathsEl = document.getElementById('paths');
+ROUTES.forEach(r=>{
+  const d = document.createElement('button');
+  d.type = 'button';
+  d.className = 'path';
+  d.dataset.k = r.k;
+  d.setAttribute('aria-pressed', 'false');
+  d.style.setProperty('--pc', PATHS[r.k].hex);
+  d.innerHTML = `<span class="path-heading"><span class="pdot"></span>${PATHS[r.k].name}</span><span class="path-description">${r.d}</span>
+    <span class="route">${r.steps.map((s,i)=>`<span class="route-step"><b>${String(i+1).padStart(2,'0')}</b><span>${s}</span></span>`).join('')}</span>`;
+  d.onclick = ()=>filterPath(activeFilter===r.k?null:r.k);
+  pathsEl.appendChild(d);
+});
+
+/* ---------- Render legend chips ---------- */
+const legend = document.getElementById('legend');
+const allChip = document.createElement('button');
+allChip.className='chip active'; allChip.innerHTML='All paths';
+allChip.onclick = ()=>filterPath(null);
+legend.appendChild(allChip);
+ALL.forEach(k=>{
+  const c = document.createElement('button');
+  c.className='chip'; c.dataset.k=k;
+  c.innerHTML = `<span class="cdot" style="background:${PATHS[k].hex}"></span>${PATHS[k].name}`;
+  c.onclick = ()=>filterPath(activeFilter===k?null:k);
+  legend.appendChild(c);
+});
+
+/* ---------- Render categories (top 10 + see more) ---------- */
+const TOP = 10;
+const root = document.getElementById('root');
+DATA.forEach(cat=>{
+  const sec = document.createElement('section');
+  sec.className = 'cat';
+  sec.innerHTML = `<div class="cat-h"><span class="dot"></span><h2>${cat.c}</h2><span class="n">${cat.items.length} tools</span></div>
+  <div class="grid">${cat.items.map(([name,icon,tag,paths])=>{
+    const sources = logoSources(name,icon);
+    const logo = sources.length
+      ? `<img loading="lazy" alt="" aria-hidden="true" src="${sources[0]}" data-logo-sources="${sources.join('|')}" data-logo-index="0" onerror="advanceLogo(this)"><span class="init">${initials(name)}</span>`
+      : `<span class="init" style="display:flex">${initials(name)}</span>`;
+    return `
+    <button type="button" class="card" data-name="${name.toLowerCase()}" data-paths="${paths}" aria-label="Learn about ${name}">
+      ${logo}
+      <span class="card-name">${name}</span><span class="tag">${tag}</span>
+      <span class="pdots">${paths.split(' ').map(k=>`<i style="background:${dotColor(k)}" title="${PATHS[k].name}"></i>`).join('')}</span>
+    </button>`;
+  }).join('')}</div>
+  ${cat.items.length>TOP?`<button class="see-more">See ${cat.items.length-TOP} more ▾</button>`:''}`;
+  const btn = sec.querySelector('.see-more');
+  if(btn){
+    const cards = [...sec.querySelectorAll('.card')];
+    cards.slice(TOP).forEach(c=>c.classList.add('hidden'));
+    btn.onclick = ()=>{
+      const open = btn.dataset.open==='1';
+      cards.slice(TOP).forEach(c=>c.classList.toggle('hidden',open));
+      btn.dataset.open = open?'0':'1';
+      btn.textContent = open?`See ${cat.items.length-TOP} more ▾`:'Show less ▴';
+    };
+  }
+  root.appendChild(sec);
+});
+
+document.querySelectorAll('.card').forEach(card=>{
+  card.addEventListener('click',()=>{
+    const category = card.closest('.cat').querySelector('.cat-h h2').textContent;
+    const name = card.querySelector('.card-name').textContent;
+    const tag = card.querySelector('.tag').textContent;
+    const paths = card.dataset.paths.split(' ');
+
+    detailTitle.textContent = name;
+    detailCategory.textContent = `${category} · ${tag}`;
+    detailDescription.textContent = `${name} is a ${tag} used for ${CATEGORY_PURPOSES[category]}`;
+    detailPaths.replaceChildren(...paths.map(key=>{
+      const badge = document.createElement('span');
+      badge.className = 'details-path';
+      badge.style.setProperty('--path-color',PATHS[key].hex);
+      badge.innerHTML = `<i aria-hidden="true"></i>${PATHS[key].name}`;
+      return badge;
+    }));
+    detailsDialog.showModal();
+  });
+});
+
+/* ---------- Filter by path / search ---------- */
+let activeFilter = null;
+const total = DATA.reduce((s,c)=>s+c.items.length,0);
+document.getElementById('count').textContent = `${total} technologies · ${DATA.length} categories`;
+function filterPath(k){
+  activeFilter = k;
+  document.querySelectorAll('.chip').forEach(c=>c.classList.toggle('active', c===allChip?!k:c.dataset.k===k));
+  document.querySelectorAll('.path').forEach(card=>card.setAttribute('aria-pressed', String(card.dataset.k===k)));
+  document.querySelectorAll('.card').forEach(card=>{
+    const hit = !k || card.dataset.paths.split(' ').includes(k);
+    card.classList.toggle('dim', !!k && !hit);
+    if(k && hit) card.style.borderColor = PATHS[k].hex;
+    else card.style.borderColor = '';
+  });
+  document.querySelectorAll('.see-more').forEach(b=>{ if(b.dataset.open!=='1') b.click(); });
+}
+const q = document.getElementById('q');
+q.oninput = ()=>{
+  const v = q.value.trim().toLowerCase();
+  let shown = 0;
+  document.querySelectorAll('.cat').forEach(sec=>{
+    let any = false;
+    sec.querySelectorAll('.card').forEach(card=>{
+      const hit = !v || card.dataset.name.includes(v) || card.textContent.toLowerCase().includes(v);
+      card.classList.toggle('hidden', !hit);
+      if(hit){any=true;shown++;}
+    });
+    sec.classList.toggle('hidden', !any);
+  });
+  document.querySelectorAll('.see-more').forEach(b=>{ if(b.dataset.open!=='1') b.click(); });
+  document.getElementById('count').textContent = v ? `${shown} matches` : `${total} technologies · ${DATA.length} categories`;
+};
+</script>
+</body>
+</html>
